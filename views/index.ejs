@@ -1,0 +1,72 @@
+<html>
+ <head>
+ 	<title>HypBin | secure anonymity!</title>
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+ 	<script src="js/ejs.min.js"></script>
+ 	<script type="text/javascript">
+ 		$(window).bind("keydown", function(event){
+ 			if(event.ctrlKey || event.metaKey){
+ 				switch(String.fromCharCode(event.which).toLowerCase()){
+ 					case 's':
+	 					event.preventDefault;
+ 						persistContent();
+ 						break;
+ 					case 'f':
+	 					event.preventDefault;
+ 						alert("f key");
+ 						break;
+ 				}
+ 			}
+ 		});
+ 	$( document ).ready(function() {
+    	$('textarea#content').val(<%-JSON.stringify(content)%>)
+    		
+	});
+ 	</script>
+<script type="text/javascript">
+ 		$(function(){
+ 			$("#btn_save").click(function(e){
+ 				console.log("save button clicked");
+ 				persistContent();	
+ 			});
+ 		});
+
+ 		function persistContent(){
+ 			var data = {};
+ 			data.permalink = '<%=permalink%>';
+ 			data.content = $("#content").val();
+ 			console.log(JSON.stringify(data));
+ 			$.ajax({
+ 				type: 'POST',
+ 				data: JSON.stringify(data),
+ 				contentType: 'application/json',
+ 				url: 'http://localhost:8080/persist_hyp001',
+ 				success: function(data){
+ 					console.log("success");
+ 					console.log(JSON.stringify(data));
+ 					var urlRedirect = JSON.stringify(data.permalink).slice(1,-1);
+ 					window.location = "http://localhost:8080/doc__"+urlRedirect;
+ 				}
+ 			});
+ 		}
+	</script>
+ </head>
+ <body>
+ 	<h4>HypBin</h4>
+ 	
+ 	<textarea id="content" rows="10" cols="100"></textarea>
+ 	<br>
+ 	<input type="checkbox" name="protect"> Protect Pin: <input type="text" name="protect_pin">
+ 	<br>
+ 	<input type="checkbox" name="encrypt"> AES encryption Key: <input type="text" name="encryption_key">
+ 	<br>
+ 	<input type="checkbox" name="share"> share link to <input type="email" name="share">
+ 	<p>
+ 	delete after <input type="date" name="delete_after_num_access"> delete after <input type="date" name="delete_after_date">
+ 	<p> 
+ 	<button id="btn_save" name="btn_save">save</button>
+ 	response here: <div id="permalink"></div>
+
+ </body>
+</html>
