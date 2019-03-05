@@ -51,6 +51,7 @@ app.get('/doc*',function(req,res){
 		if(err) throw err;
 	});
 	let retData = JSON.parse(rawData);
+	retData.createNew = false;
 	console.log(JSON.stringify(retData))
 	res.render("index",retData);
 });

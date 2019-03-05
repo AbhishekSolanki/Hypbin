@@ -1,0 +1,58 @@
+html, body, .grid-container { height: 100%; margin: 0; }
+
+.grid-container * { 
+
+ position: relative;
+}
+
+.grid-container *:after { 
+ position: absolute;
+ top: 0;
+ left: 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 0.5fr;
+  grid-template-rows: 0.2fr 1.8fr 1fr;
+  grid-template-areas: "workspace workspace workspace header" "workspace workspace workspace options" "workspace workspace workspace options";
+}
+
+.workspace { grid-area: workspace; }
+
+.header { grid-area: header; }
+
+.options { grid-area: options; }
+
+
+#content {
+    min-width: 99%;
+    min-height: 99%;
+    border: none;
+    
+    /* Yellow background to highlight the textbox */
+    background-color: #20262e;
+    color: #adcfd4;
+    font-size: 14px;
+    font-family: monospace;
+    
+    /* Center text with flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#content:focus {
+    outline: none !important;
+    border:1px solid grey;
+    color:white;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+input[type=text] {
+	    background-color: rgba(0, 0, 0, 0.15);
+}
+
+span {
+  content: "\00FD";
+}
