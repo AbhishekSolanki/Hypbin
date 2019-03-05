@@ -3,28 +3,38 @@
  	<title>HypBin | secure anonymity!</title>
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  	<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
  	<script src="js/ejs.min.js"></script>
  	<script type="text/javascript">
- 		$(window).bind("keydown", function(event){
- 			if(event.ctrlKey || event.metaKey){
- 				switch(String.fromCharCode(event.which).toLowerCase()){
- 					case 's':
-	 					event.preventDefault;
- 						persistContent();
- 						break;
- 					case 'f':
-	 					event.preventDefault;
- 						alert("f key");
- 						break;
- 				}
- 			}
- 		});
- 	$( document ).ready(function() {
-    	$('textarea#content').val(<%-JSON.stringify(content)%>)
-    		
-	});
- 	</script>
-<script type="text/javascript">
+	// short cut handling
+	$(window).bind('keydown', function(event) {
+     if (event.ctrlKey || event.metaKey) {
+        switch (String.fromCharCode(event.which).toLowerCase()) {
+        case 's': // ctrl + s to save 
+            event.preventDefault();
+			persistContent();
+            break;
+        case 'l': //ctrl + l for new instance
+			event.preventDefault();
+			window.location = "http://localhost:8080/";
+            break;
+        case 'g':
+            event.preventDefault();
+            alert('ctrl-g');
+            break;
+        }
+     }
+  });
+
+		
+  $( document ).ready(function() {
+  var currentUrl = window.location.href;
+    if(!<%-JSON.stringify(createNew)%>) copyUrlToClipboard(currentUrl);
+   $('textarea#content').val(<%-JSON.stringify(content)%>);
+     var currentUrl = window.location.href;
+    if(!<%-JSON.stringify(createNew)%>) copyUrlToClipboard(currentUrl);
+  });
+ 
  		$(function(){
  			$("#btn_save").click(function(e){
  				console.log("save button clicked");
@@ -50,6 +60,15 @@
  				}
  			});
  		}
+		
+		function copyUrlToClipboard(data){	
+			var $temp = $("<input>");
+			$("body").append($temp);
+			$temp.val(data).select().focus();
+			document.execCommand("copy");
+			$temp.remove();
+			console.log("url copied to clipboard");
+		}
 	</script>
  </head>
  <body>
