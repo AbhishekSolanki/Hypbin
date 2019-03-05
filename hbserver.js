@@ -16,21 +16,22 @@ app.set('view engine', 'ejs');
 
 
 app.get("/", function(req,res){
-	retData = {}
-	retData.content="";
-	retData.permalink="";
+	retData = {} 
+	retData.content=""; //actual content
+	retData.permalink=""; //unique link
+	retData.createNew = true; // aids in indentifying opened existing document or working on new ; clipboard copy
 	res.render("index",retData);
 });
 
 app.post("/persist_hyp001",function(req,res){
 	console.log("body: "+JSON.stringify(req.body));
+	// if there is no permalink then it is new document and requires id
 	if (typeof req.body.permalink === "undefined" || req.body.permalink === "" || req.body.permalink === null){
 		urlId = shortid.generate(); 
 	} else {
 		urlId = req.body.permalink
 	}
-	
-	console.log("url id: "+urlId);
+	console.log("permalink : "+urlId);
 	req.body.permalink = urlId;
 	json_obj = JSON.stringify(req.body);
 	fs.writeFile(__dirname+"/data/"+urlId+".json",json_obj,"utf-8",function(err){
@@ -38,6 +39,7 @@ app.post("/persist_hyp001",function(req,res){
 		console.log("document "+urlId+" saved!");
 		retObj = {};
 		retObj.permalink = urlId;
+		retObj.createNew = false;
 		res.send(retObj);
 	});
 });
@@ -49,7 +51,6 @@ app.get('/doc*',function(req,res){
 		if(err) throw err;
 	});
 	let retData = JSON.parse(rawData);
-	retData.createNew = false;
 	console.log(JSON.stringify(retData))
 	res.render("index",retData);
 });
