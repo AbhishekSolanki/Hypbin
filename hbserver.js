@@ -52,7 +52,7 @@ app.get('/doc*',function(req,res){
 	});
 	let retData = JSON.parse(rawData);
 	retData.createNew = false;
-	console.log(JSON.stringify(retData))
+	//console.log(JSON.stringify(retData))
 	res.render("index",retData);
 });
 

@@ -27,9 +27,9 @@
 			event.preventDefault();
 			window.location = "http://localhost:8080/";
             break;
-        case 'g':
+        case 'o':
             event.preventDefault();
-            alert('ctrl-g');
+            $('#link-box').toggle('slow');
             break;
         }
      }
@@ -37,6 +37,9 @@
 
 		
   $( document ).ready(function() {
+  	$('#btn_options').click(function() {
+  $('#link-box').toggle('slow');
+});
   $('#urlClip').hide();
    $('textarea#content').val(<%-JSON.stringify(content)%>);
      var currentUrl = window.location.href;
@@ -79,33 +82,35 @@
 			//$temp.remove();
 			//console.log("url copied to clipboard");
 		}
+
+		
+
 	</script>
  </head>
  <body>
   <div class="grid-container">
       <div class="Header">
- 	      <h4>H Y &#43004; B I  &#886; <sub>beta 0.1</sub></h4> <input type="text" id="urlClip" style="width: auto; display:inline-block; color: white;  "></input> 
+ 	      <h4>H Y &#43004; B I  &#886; <sub>beta 0.1</sub></h4> 
+ 	      <input type="text" id="urlClip" style="width: auto; display:inline-block; color: white;  "></input> 
         <p>
  	</div>
   <div class="workspace">
     <textarea id="content" placeholder="
-    The first draft is just you telling yourself the story.
-    -―Terry Pratchett
+    Thought of the Day:
+    &quot;The first draft is just you telling yourself the story.&quot;
+    ― Terry Pratchett
     "></textarea>
     <br>
   </div>
   <div class="options">
- 	  <input type="checkbox" name="protect"> Protect Pin: <input type="text" name="protect_pin">
- 	  <br>
- 	  <input type="checkbox" name="encrypt"> AES encryption Key: <input type="text" name="encryption_key">
- 	  <br>
- 	  <input type="checkbox" name="share"> share link to <input type="text" name="share">
- 	  <p>
- 	  delete after <input type="text" name="delete_after_num_access"> 
-    <p>
-    access count <input type="text" name="delete_after_date">
- 	  <p> 
- 	  <button id="btn_save" name="btn_save">save</button>
+  	<div id="btn_save" name="btn_save" style="font-size: 25px; float:left;">&#128190;&nbsp;</div>
+  	  <div id="btn_options" name="btn_options" style="font-size: 25px; float:left;">&#x2699;</div>
+  	  	<div id="link-box" style="float:left;">
+   <input type="checkbox" name="protect"> Protect <input type="text" name="protect_pin" placeholder="secret key">
+
+</div>
+ 	  
+ 	  
   </div>
  </body>
 </html>
