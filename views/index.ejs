@@ -25,7 +25,7 @@
             break;
         case 'l': //ctrl + l for new instance
 			event.preventDefault();
-			window.location = "http://localhost:8080/";
+			window.location = "/";
             break;
         case 'o':
             event.preventDefault();
@@ -37,48 +37,49 @@
 
 		
   $( document ).ready(function() {
+  	// binding options for settings
   	$('#btn_options').click(function() {
-  $('#link-box').toggle('slow');
-});
-  $('#urlClip').hide();
-   $('textarea#content').val(<%-JSON.stringify(content)%>);
-     var currentUrl = window.location.href;
-    if(!<%-JSON.stringify(createNew)%>) copyUrlToClipboard(currentUrl);
-  });
+ 		$('#link-box').toggle('slow');
+	});
+  	$('#urlClip').hide(); // url clipboard should not be shown on new page
+  	// load the content of workspace 
+   	$('textarea#content').val(<%-JSON.stringify(content)%>);
+    	var currentUrl = window.location.href;
+    	if(!<%-JSON.stringify(createNew)%>) copyUrlToClipboard(currentUrl);
+ 	 });
  
- 		$(function(){
- 			$("#btn_save").click(function(e){
- 				console.log("save button clicked");
- 				persistContent();	
- 			});
+ 	$(function(){
+ 		$("#btn_save").click(function(e){
+ 			console.log("save button clicked");
+ 			persistContent();	
  		});
+ 	});
 
- 		function persistContent(){
- 			var data = {};
- 			data.permalink = '<%=permalink%>';
- 			data.content = $("#content").val();
- 			console.log(JSON.stringify(data));
- 			$.ajax({
- 				type: 'POST',
- 				data: JSON.stringify(data),
- 				contentType: 'application/json',
- 				url: 'http://localhost:8080/persist_hyp001',
- 				success: function(data){
- 					console.log("success");
- 					console.log(JSON.stringify(data));
- 					var urlRedirect = JSON.stringify(data.permalink).slice(1,-1);
- 					window.location = "http://localhost:8080/doc__"+urlRedirect;
- 				}
- 			});
- 		}
+ 	function persistContent(){
+ 		var data = {};
+ 		data.permalink = '<%=permalink%>';
+ 		data.content = $("#content").val();
+ 		console.log(JSON.stringify(data));
+ 		$.ajax({
+ 			type: 'POST',
+ 			data: JSON.stringify(data),
+ 			contentType: 'application/json',
+ 			url: '/persist_hyp001',
+ 			success: function(data){
+ 				console.log("success");
+ 				console.log(JSON.stringify(data));
+ 				var urlRedirect = JSON.stringify(data.permalink).slice(1,-1);
+ 				window.location = "/doc__"+urlRedirect;
+ 			}
+ 		});
+ 	}
 		
-		function copyUrlToClipboard(data){	
-			//var $temp = $("<input>");
-			//$("#urlClip").append($temp);
+	function copyUrlToClipboard(data){	
+		//var $temp = $("<input>");
+		//$("#urlClip").append($temp);
       $('#urlClip').show();
-			$('#urlClip').val(data).select().focus();
+		$('#urlClip').val(data).select().focus();
 			document.execCommand("copy");
-
 			//$temp.remove();
 			//console.log("url copied to clipboard");
 		}
@@ -104,8 +105,10 @@
   </div>
   <div class="options">
   	<div id="btn_save" name="btn_save" style="font-size: 25px; float:left;">&#128190;&nbsp;</div>
-  	  <div id="btn_options" name="btn_options" style="font-size: 25px; float:left;">&#x2699;</div>
-  	  	<div id="link-box" style="float:left;">
+  	<div id="btn_options" name="btn_options" style="font-size: 25px; float:left;">&#x2699;&nbsp;</div>
+  	<div id="btn_delete" name="btn_delete" style="font-size: 25px; float:left;">&#x1F5D1;&nbsp;</div>
+  	<div id="btn_email" name="btn_email" style="font-size: 25px; float:left;">&#x1f4e7;&nbsp;</div>
+  	<div id="link-box" style="float:left;">
    <input type="checkbox" name="protect"> Protect <input type="text" name="protect_pin" placeholder="secret key">
 
 </div>
