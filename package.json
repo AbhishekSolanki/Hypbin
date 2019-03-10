@@ -1,0 +1,21 @@
+{
+  "name": "hypbin",
+  "version": "0.0.1",
+  "description": "beta",
+  "main": "hbserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node hbserver.js"
+  },
+  "author": "Abhishek Solanki",
+  "license": "ISC",
+  "dependencies": {
+    "express": "latest",
+    "ejs": "latest",
+    "body-parser": "latest",
+    "shortid": "latest",
+    "url": "latest",
+    "path": "latest"
+  }
+
+}

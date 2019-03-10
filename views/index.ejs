@@ -1,6 +1,8 @@
 <html>
  <head>
- 	<title>HypBin | secure anonymity!</title>
+ 	<title>Hypbin</title>
+ 	<meta name="description" content="Anonymously paste,share,upload and cloud printing tool.">
+    <meta name="keywords" content="paste,share,cloud,print,upload">
   <style>
   body {
   background-color: #20262e;
@@ -31,6 +33,10 @@
             event.preventDefault();
             $('#link-box').toggle('slow');
             break;
+        case 'd':
+            event.preventDefault();
+            if(confirm("press \"OK\" to delete")) deleteDocument();
+            break;
         }
      }
   });
@@ -47,11 +53,16 @@
     	var currentUrl = window.location.href;
     	if(!<%-JSON.stringify(createNew)%>) copyUrlToClipboard(currentUrl);
  	 });
- 
+  	
  	$(function(){
  		$("#btn_save").click(function(e){
  			console.log("save button clicked");
  			persistContent();	
+ 		});
+
+ 		$("#btn_delete").click(function(e){
+ 			console.log("delete button clicked");
+ 			if(confirm("confirm to delete the deleteDocument")) deleteDocument();	
  		});
  	});
 
@@ -61,15 +72,32 @@
  		data.content = $("#content").val();
  		console.log(JSON.stringify(data));
  		$.ajax({
- 			type: 'POST',
+ 			type: 'PUT',
  			data: JSON.stringify(data),
  			contentType: 'application/json',
  			url: '/persist_hyp001',
  			success: function(data){
- 				console.log("success");
+ 				console.log("persist ok");
  				console.log(JSON.stringify(data));
  				var urlRedirect = JSON.stringify(data.permalink).slice(1,-1);
  				window.location = "/doc__"+urlRedirect;
+ 			}
+ 		});
+ 	}
+
+ 	function deleteDocument(){
+ 		var data = {};
+ 		data.permalink = '<%=permalink%>';
+ 		//data.content = $("#content").val();
+ 		console.log(JSON.stringify(data));
+ 		$.ajax({
+ 			type: 'DELETE',
+ 			data: JSON.stringify(data),
+ 			contentType: 'application/json',
+ 			url: '/delete_hyp001',
+ 			success: function(data){
+ 				console.log("delete ok");
+ 				window.location = "/";
  			}
  		});
  	}
